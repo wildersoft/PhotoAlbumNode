@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Album photos</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script src="/socket.io/socket.io.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="jumbotron">
+                <h4>Choose an album</h4>
+                <select class="form-control" id='albums'></select>
+                <br>
+                <button class="btn btn-success" id='showAlbums'>Show Albums</button>
+            </div>
+            <div id="photos" class="jumbotron" style="height: 400px; overflow: auto; border: 1px solid #000;">
+            </div>
+            <div id="comments" class="jumbotron" style="height: 400px; overflow: auto; border: 1px solid #000;">
+            </div>
+        </div>
+    </body>
+    <script>
+        var commentsDiv = $('#comments');
+        var photosDiv = $('#photos');
+
+        $(() => {
+            callApi('Albums', (albums) => {
+                albums.forEach(album => {
+                    $('#albums').append(`<option value='${album.id}'>${album.title}</option>`);
+                });
+            });
+        });
+
+        $('#albums').change(() => {
+            photosDiv.empty();
+            commentsDiv.empty();
+        })
+
+        $('#showAlbums').click(() => {
+            photosDiv.empty();
+            var albumId = $('#albums').val();
+            callApi(`Photos/${albumId}`, (photos) => {
+                photos.forEach(photo => {
+                    photosDiv.append(`<div><img src='${photo.thumbnailUrl}' style='width:300px; border: 1px solid #000;'><button onclick='showComments("${photo.id}")'>Show Comments...</button><hr></div>`);
+                });
+            });
+        });
+
+        function callApi (endPoint, callback) {
+            $.get(`/${endPoint}`, (data) => {
+                return callback(data);
+            });
+        }
+
+        function showComments (postId) {
+            commentsDiv.empty();
+            callApi(`Comments/${postId}`, (comments) => {
+                comments.forEach(comment => {
+                    commentsDiv.append(`<div><h4>${comment.name}</h4><h5>${comment.email}</h5><div>${comment.body}</div><hr></div>`);
+                });
+            });
+        }
+    </script>
+</html>
