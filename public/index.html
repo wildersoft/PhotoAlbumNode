@@ -26,7 +26,7 @@
         var photosDiv = $('#photos');
 
         $(() => {
-            callApi('Albums', (albums) => {
+            callApi('albums', (albums) => {
                 albums.forEach(album => {
                     $('#albums').append(`<option value='${album.id}'>${album.title}</option>`);
                 });
@@ -41,7 +41,7 @@
         $('#showAlbums').click(() => {
             photosDiv.empty();
             var albumId = $('#albums').val();
-            callApi(`Photos/${albumId}`, (photos) => {
+            callApi(`photos/${albumId}`, (photos) => {
                 photos.forEach(photo => {
                     photosDiv.append(`<div><img src='${photo.thumbnailUrl}' style='width:300px; border: 1px solid #000;'><button onclick='showComments("${photo.id}")'>Show Comments...</button><hr></div>`);
                 });
@@ -56,7 +56,7 @@
 
         function showComments (postId) {
             commentsDiv.empty();
-            callApi(`Comments/${postId}`, (comments) => {
+            callApi(`comments/${postId}`, (comments) => {
                 comments.forEach(comment => {
                     commentsDiv.append(`<div><h4>${comment.name}</h4><h5>${comment.email}</h5><div>${comment.body}</div><hr></div>`);
                 });

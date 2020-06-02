@@ -17,14 +17,14 @@ app.get('/', (request, response) => {
     response.sendFile(__dirname + '/public/index.html')
 });
 
-app.get('/Albums', (request, response) => {
+app.get('/albums', (request, response) => {
     var dataJson = getApiContent(`${apiAddress}/albums`, (dataJson) => {
         response.setHeader('Content-Type', 'application/json');
         response.send(dataJson);
     });
 });
 
-app.get('/Photos/:albumid', (request, response) => {
+app.get('/photos/:albumid', (request, response) => {
     var albumId = request.params.albumid;
     var dataJson = getApiContent(`${apiAddress}/albums/${albumId}/photos`, (dataJson) => {
         response.setHeader('Content-Type', 'application/json');
@@ -32,7 +32,7 @@ app.get('/Photos/:albumid', (request, response) => {
     });
 });
 
-app.get('/Comments/:postid', (request, response) => {
+app.get('/comments/:postid', (request, response) => {
     var postId = request.params.postid;
     var dataJson = getApiContent(`${apiAddress}/posts/${postId}/comments`, (dataJson) => {
         response.setHeader('Content-Type', 'application/json');
