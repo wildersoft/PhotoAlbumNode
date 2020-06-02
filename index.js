@@ -13,6 +13,7 @@ server.listen(port, () => {
 });
 
 app.get('/', (request, response) => {
+    console.log("index");
     response.sendFile(__dirname + '/public/index.html')
 });
 
