@@ -3,7 +3,7 @@ var http = require('http');
 var server = http.Server(app);
 var settings = require('./settings.json');
 //const port = 3003;
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3003;
 
 
 const apiAddress = settings.apiAddress;
