@@ -2,7 +2,9 @@ var app = require('express')();
 var http = require('https');
 var server = http.Server(app);
 var settings = require('./settings.json');
-const port = 3003;
+//const port = 3003;
+const port = process.env.PORT || 8080;
+
 
 const apiAddress = settings.apiAddress;
 
